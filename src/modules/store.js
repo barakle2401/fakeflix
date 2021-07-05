@@ -66,7 +66,7 @@ const store = new Vuex.Store({
         discoverMovie({ commit }, id) {
 
             commit('setLoading', true)
-            axios.get(`http://www.omdbapi.com/?apikey=${OMDB_API_KEY}&i=${id}&plot=full`)
+            axios.get(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&i=${id}&plot=full`)
                 .then(res => {
                     console.log(res);
                     if (res.data.Response === 'True') {
