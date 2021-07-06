@@ -23,7 +23,9 @@
         return store.state.loading;
       },
     },
-    created() {},
+    created() {
+      this.$store.dispatch("submitSearch", "batman");
+    },
   };
 </script>
 

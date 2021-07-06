@@ -9,7 +9,7 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
 
     state: {
-        searchValue: '',
+        searchValue: 'Batman',
         searchResults: {},
         discoverMovieData: {},
         loading: false,
@@ -68,7 +68,7 @@ const store = new Vuex.Store({
             commit('setLoading', true)
             axios.get(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&i=${id}&plot=full`)
                 .then(res => {
-                    console.log(res);
+
                     if (res.data.Response === 'True') {
                         commit('setDiscoverMovieData', res.data)
                     } else {

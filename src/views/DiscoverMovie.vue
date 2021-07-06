@@ -89,7 +89,7 @@
         return this.$store.state.discoverMovieData;
       },
       actors() {
-        if (this.movie) return this.movie.Actors.split(",");
+        if (this.movie.Actors) return this.movie.Actors.split(",");
         return [];
       },
     },
