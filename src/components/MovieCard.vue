@@ -1,11 +1,9 @@
 <template>
-  <v-col cols="12" md="3">
+  <v-col cols="6" md="3">
     <v-card class="mx-auto my-12 movie-card rounded-0" max-width="374">
       <v-img height="350" :src="poster"></v-img>
 
-      <v-card-title class="text-truncate white--text px-3 pb-1">{{
-        data.Title
-      }}</v-card-title>
+      <v-card-title class="px-3 pb-1">{{ data.Title }}</v-card-title>
       <div class="d-flex ">
         <v-subheader class="grey--text"
           >Type: {{ data.Type | capitalize }}</v-subheader

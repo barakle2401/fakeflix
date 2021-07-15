@@ -5,7 +5,7 @@ import DiscoverMovie from "../views/DiscoverMovie"
 Vue.use(VueRouter)
 const routes = [
     { path: '/', component: Home },
-    { path: '/discover-movie/:id', component: DiscoverMovie, name: 'discoverMovie' }
+    { path: '/discover-movie', component: DiscoverMovie, name: 'discoverMovie' }
 ]
 const router = new VueRouter({
     routes

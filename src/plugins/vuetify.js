@@ -8,9 +8,10 @@ const opts = {
     theme: {
         dark: true,
         themes: {
-            light: {
 
+            light: {
                 netflix: '#ff2c1f',
+
             },
             dark: {
                 primary: '#ff2c1f',

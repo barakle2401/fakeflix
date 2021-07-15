@@ -13,16 +13,10 @@ const store = new Vuex.Store({
         searchResults: {},
         discoverMovieData: {},
         loading: false,
-        dataFetched: false
+
     },
     mutations: {
-        setSearchValue(state, value) {
-            state.searchValue = value
-        },
-        setData(state, results) {
-            state.searchResults = results;
 
-        },
         setLoading(state, payload) {
             state.loading = payload
         },
@@ -41,28 +35,7 @@ const store = new Vuex.Store({
 
             commit('setSearchValue', value)
         },
-        submitSearch({ commit }, value) {
-            commit('setLoading', true)
-            setTimeout(() => {
 
-                axios.get(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${value}&plot=full`)
-                    .then(res => res.data)
-                    .then(res => {
-                        if (res.Response === 'False') {
-                            alert(res.Error)
-                        } else {
-                            commit('setData', res.Search)
-                            commit('setDataFetched', true)
-
-                        }
-                        commit('setLoading', false)
-                    })
-                    .catch(({ message }) => {
-                        console.log(message);
-                    })
-
-            }, 1500)
-        },
         discoverMovie({ commit }, id) {
 
             commit('setLoading', true)

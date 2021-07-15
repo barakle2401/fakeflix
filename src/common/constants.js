@@ -1,2 +1,3 @@
 const OMDB_API_KEY = "7b773725";
-export { OMDB_API_KEY }
+const TMDB_API_KEY = "b45727fd610404e043ed035aaf0eaba8";
+export { OMDB_API_KEY, TMDB_API_KEY }

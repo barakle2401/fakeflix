@@ -3,6 +3,7 @@
     <v-app>
       <Loader v-if="appLoading"></Loader>
       <ToolBar></ToolBar>
+      <NavBar></NavBar>
       <transition>
         <router-view></router-view>
       </transition>
@@ -14,18 +15,23 @@
   import store from "./modules/store";
   import Loader from "./shared/Loader.vue";
   import ToolBar from "./shared/ToolBar.vue";
+  import NavBar from "./shared/NavBar.vue";
+  /*
+    Todo's next ideas:
+     - add rating popup component 
+  
+  */
+
   export default {
     name: "App",
     store,
-    components: { Loader, ToolBar },
+    components: { Loader, ToolBar, NavBar },
     computed: {
       appLoading() {
         return store.state.loading;
       },
     },
-    created() {
-      this.$store.dispatch("submitSearch", "batman");
-    },
+    created() {},
   };
 </script>
 

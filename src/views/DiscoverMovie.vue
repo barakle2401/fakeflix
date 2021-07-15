@@ -82,7 +82,7 @@
     name: "DiscoverMovie",
     data: () => ({}),
     created() {
-      this.$store.dispatch("discoverMovie", this.$route.params.id);
+      //this.$store.dispatch("discoverMovie", this.$route.params.id);
     },
     computed: {
       movie() {
