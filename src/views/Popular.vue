@@ -6,10 +6,16 @@
       The most popular movies
     </div>
     <v-row>
-      <v-col md="2" sm="3" cols="6" v-for="movie in movies" :key="movie.id">
+      <v-col
+        transition="scale-transition"
+        md="2"
+        sm="3"
+        cols="6"
+        v-for="movie in movies"
+        :key="movie.id"
+      >
         <v-card>
           <v-img
-            transition="scale-transition"
             v-show="show"
             contain
             :src="poster(movie.poster_path)"
