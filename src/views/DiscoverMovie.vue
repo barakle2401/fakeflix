@@ -82,7 +82,10 @@
     name: "DiscoverMovie",
     data: () => ({}),
     created() {
-      //this.$store.dispatch("discoverMovie", this.$route.params.id);
+      if (!this.$route.params.id) this.$router.push("/");
+      this.$store.dispatch("discoverMovie", this.$route.params.id);
+
+      this.id = this.$route.params.id;
     },
     computed: {
       movie() {

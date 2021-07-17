@@ -3,7 +3,7 @@
     <Title></Title>
     <SearchBar> </SearchBar>
 
-    <v-container v-if="dataFetched">
+    <v-container>
       <transition name="slide-fade"> </transition>
       <Cards> </Cards>
     </v-container>
@@ -21,11 +21,7 @@
       SearchBar,
       Cards,
     },
-    computed: {
-      dataFetched() {
-        return this.$store.state.dataFetched;
-      },
-    },
+    computed: {},
   };
 </script>
 <style></style>

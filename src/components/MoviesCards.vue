@@ -1,10 +1,15 @@
 <template>
-  <v-row class="justify-center">
-    <MovieCard
+  <v-row class="justify-start">
+    <v-col
+      xl="2"
+      sm="3"
+      xs="4"
+      cols="6"
       v-for="(item, i) in searchResults"
-      :data="item"
       :key="i"
-    ></MovieCard>
+    >
+      <MovieCard :data="item"></MovieCard>
+    </v-col>
   </v-row>
 </template>
 <script>

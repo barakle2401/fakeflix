@@ -3,18 +3,15 @@
     <v-row class="justify-center align-center p-0">
       <v-col cols="12" sm="8" md="6">
         <v-expand-transition>
-          <v-autocomplete
-            :search-input.sync="searchValue"
-            v-model="selectedMovie"
-            @keyup="handleSubmit"
+          <v-text-field
+            v-model="searchValue"
             label="Search"
             placeholder="Enter a movie"
             :loading="loading"
-            :items="items"
-            return-object
             item-text="Title"
             class="search-input"
-          ></v-autocomplete>
+            solo-inverted
+          ></v-text-field>
         </v-expand-transition>
       </v-col>
     </v-row>
@@ -22,7 +19,7 @@
 </template>
 <script>
   import { OMDB_API_KEY } from "../common/constants";
-
+  import { debounce } from "../common/functions";
   import axios from "axios";
   export default {
     name: "SearchBar",
@@ -30,14 +27,23 @@
       return {
         searchValue: null,
         loading: false,
-        items: [],
+
         search: null,
-        selectedMovie: null,
+        selectedMovie: "",
       };
     },
-    computed: {},
+    computed: {
+      items: {
+        get() {
+          return this.$store.getters.searchResults;
+        },
+        set(newVal) {
+          this.$store.commit("setSearchResults", newVal);
+        },
+      },
+    },
     watch: {
-      searchValue(val) {
+      searchValue: debounce(function(val) {
         this.loading = true;
         const moviesUrl = axios.get(
           `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${val}&page=undefined&type=movie&y=All`
@@ -53,6 +59,7 @@
           .all([moviesUrl, seriesUrl, gamesUrl])
           .then(
             axios.spread((...responses) => {
+              this.items = [];
               responses.forEach((res) => {
                 if (res.data.Response === "True") {
                   this.items = this.items.concat(res.data.Search);
@@ -66,24 +73,10 @@
           .finally(() => {
             this.loading = false;
           });
-      },
-      selectedMovie(val) {
-        if (val.length === 0) return;
-        this.$store.commit("setDiscoverMovieData", val);
-        this.$router.push("discover-movie");
-      },
+      }, 800),
     },
 
-    methods: {
-      handleSubmit(e) {
-        if (e.keyCode === 13) {
-          console.log(this.selectedMovie);
-
-          if (this.selectedMovie.length === 0) return;
-          this.$store.dispatch("discoverMovie", this.selectedMovie);
-        }
-      },
-    },
+    methods: {},
   };
 </script>
 <style>
@@ -93,10 +86,5 @@
     display: flex;
     display: flex;
     align-items: center;
-  }
-  .v-input__slot {
-    /* background-color: #ffffff !important; */
-
-    /* font-size: 1.2rem !important; */
   }
 </style>

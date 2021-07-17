@@ -10,7 +10,7 @@ const store = new Vuex.Store({
 
     state: {
         searchValue: 'Batman',
-        searchResults: {},
+        searchResults: [],
         discoverMovieData: {},
         loading: false,
 
@@ -20,13 +20,12 @@ const store = new Vuex.Store({
         setLoading(state, payload) {
             state.loading = payload
         },
-        setDataFetched(state, payload) {
-            state.dataFetched = payload
-        },
+
         setDiscoverMovieData(state, payload) {
             state.discoverMovieData = payload;
-        }, resetDiscoverMovie(state) {
-            state.discoverMovieData = {};
+        },
+        setSearchResults(state, results) {
+            state.searchResults = results
         }
     },
     actions: {
@@ -45,7 +44,7 @@ const store = new Vuex.Store({
                     if (res.data.Response === 'True') {
                         commit('setDiscoverMovieData', res.data)
                     } else {
-                        alert('Something went wrong')
+
                         router.go(-1)
                     }
                     commit('setLoading', false)
@@ -64,9 +63,10 @@ const store = new Vuex.Store({
             //display only movies that has an image
             if (Object.keys(state.searchResults).length !== 0)
                 return state.searchResults.filter(movie => movie.Poster !== 'N/A')
-            return {}
+            return []
 
-        }
+        },
+
     }
 
 })

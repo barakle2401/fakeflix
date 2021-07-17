@@ -2,14 +2,14 @@ const debounce = function (func, timer) {
 
     let timeId = null;
 
-    return (...args) => {
+    return function (...args) {
 
         if (timeId) {
             clearTimeout(timeId)
         }
-
-        timeId = setTimeout(() => {
-            func(...args)
+        const that = this
+        timeId = setTimeout(function () {
+            func.apply(that, args)
         }, timer)
     }
 
