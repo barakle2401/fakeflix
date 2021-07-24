@@ -14,4 +14,8 @@ const debounce = function (func, timer) {
     }
 
 }
-export { debounce }
+const formatDate = (date) => {
+
+    return new Date(date).toLocaleDateString("en-US")
+}
+export { debounce, formatDate }

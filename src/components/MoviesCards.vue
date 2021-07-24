@@ -8,7 +8,7 @@
       v-for="(item, i) in searchResults"
       :key="i"
     >
-      <MovieCard :data="item"></MovieCard>
+      <MovieCard :display-delay="i * 100" :data="item"></MovieCard>
     </v-col>
   </v-row>
 </template>

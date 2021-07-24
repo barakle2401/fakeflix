@@ -14,7 +14,7 @@
         v-for="movie in movies"
         :key="movie.id"
       >
-        <v-card>
+        <v-card @click="discover(movie)">
           <v-img
             v-show="show"
             contain
@@ -22,10 +22,16 @@
             class="white--text align-end"
             gradient="to bottom,  rgba(0,0,0,0.5),  rgba(255,44,31,0.1), rgba(0,0,0,0.5)"
           >
-            <v-card-subtitle
-              class="text-truncate text-left"
-              v-text="movie.original_title"
-            ></v-card-subtitle>
+            <div class="opacity">
+              <v-card-subtitle
+                class="text-truncate text-left"
+                v-text="movie.original_title"
+              ></v-card-subtitle>
+              <v-card-subtitle class="text-truncate text-left"
+                >Release: {{ formatDate(movie.release_date) }}</v-card-subtitle
+              >
+              <Rating :rating="movie.vote_average"></Rating>
+            </div>
           </v-img>
 
           <v-card-actions>
@@ -52,10 +58,15 @@
 </template>
 <script>
   import axios from "axios";
-  const IMG_API = "https://image.tmdb.org/t/p/w1280";
-  import { TMDB_API_KEY } from "../common/constants";
+
+  import { TMDB_API_KEY, IMG_API } from "../common/constants";
+  import { formatDate as _formatDate } from "../common/functions";
+  import Rating from "../shared/Rating.vue";
   export default {
     name: "Popular",
+    components: {
+      Rating,
+    },
     data: function() {
       return {
         movies: [],
@@ -72,6 +83,12 @@
       },
     },
     methods: {
+      discover(movie) {
+        this.$store.dispatch("discoverTmdbMovie", movie);
+      },
+      formatDate(date) {
+        return _formatDate(date);
+      },
       getPopularMovies() {
         this.$store.commit("setLoading", true);
         this.show = false;
@@ -98,8 +115,13 @@
       },
       addToFavorites(movieId) {
         console.log(movieId);
+        // this.$store.commit("addRemoveToFavorites", movieId);
       },
     },
   };
 </script>
-<style></style>
+<style>
+  .opacity {
+    background-color: #572b293f;
+  }
+</style>

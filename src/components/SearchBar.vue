@@ -2,17 +2,34 @@
   <v-container id="searchBarWrapper">
     <v-row class="justify-center align-center p-0">
       <v-col cols="12" sm="8" md="6">
-        <v-expand-transition>
+        <v-scale-transition>
           <v-text-field
+            v-show="showSearchInput"
             v-model="searchValue"
             label="Search"
-            placeholder="Enter a movie"
+            placeholder="Search for a movie, series, or a game"
             :loading="loading"
             item-text="Title"
             class="search-input"
             solo-inverted
           ></v-text-field>
-        </v-expand-transition>
+        </v-scale-transition>
+      </v-col>
+    </v-row>
+    <v-row class="justify-center text-left font-weight-bolder">
+      <v-col cols="12" sm="6" md="4">
+        <v-fab-transition>
+          <v-alert
+            v-show="showAlert && searchValue.length > 0"
+            text
+            prominent
+            type="error"
+            icon="mdi-cloud-alert"
+            dense
+          >
+            <p class="text-h7">No matches were found for {{ searchValue }}</p>
+          </v-alert>
+        </v-fab-transition>
       </v-col>
     </v-row>
   </v-container>
@@ -20,14 +37,15 @@
 <script>
   import { OMDB_API_KEY } from "../common/constants";
   import { debounce } from "../common/functions";
-  import axios from "axios";
+  // import axios from "axios";
   export default {
     name: "SearchBar",
     data() {
       return {
         searchValue: null,
         loading: false,
-
+        showSearchInput: false,
+        showAlert: false,
         search: null,
         selectedMovie: "",
       };
@@ -42,23 +60,29 @@
         },
       },
     },
+    mounted() {
+      setTimeout(() => {
+        this.showSearchInput = true;
+      }, 500);
+    },
     watch: {
       searchValue: debounce(function(val) {
         this.loading = true;
-        const moviesUrl = axios.get(
+        this.showAlert = false;
+        const moviesUrl = this.$axios.get(
           `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${val}&page=undefined&type=movie&y=All`
         );
-        const seriesUrl = axios.get(
+        const seriesUrl = this.$axios.get(
           `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${val}&page=undefined&type=series&y=All`
         );
-        const gamesUrl = axios.get(
+        const gamesUrl = this.$axios.get(
           `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${val}&page=undefined&type=game&y=All`
         );
 
-        axios
+        this.$axios
           .all([moviesUrl, seriesUrl, gamesUrl])
           .then(
-            axios.spread((...responses) => {
+            this.$axios.spread((...responses) => {
               this.items = [];
               responses.forEach((res) => {
                 if (res.data.Response === "True") {
@@ -72,19 +96,14 @@
           })
           .finally(() => {
             this.loading = false;
+            this.items.length === 0
+              ? (this.showAlert = true)
+              : (this.showAlert = false);
           });
-      }, 800),
+      }, 350),
     },
 
     methods: {},
   };
 </script>
-<style>
-  #searchBarWrapper {
-    /* margin-top: 10vh; */
-    background-color: transparent;
-    display: flex;
-    display: flex;
-    align-items: center;
-  }
-</style>
+<style></style>

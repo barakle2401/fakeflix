@@ -2,7 +2,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { OMDB_API_KEY } from "../common/constants"
-import axios from 'axios'
+
 import router from '../router/router'
 
 Vue.use(Vuex)
@@ -12,6 +12,7 @@ const store = new Vuex.Store({
         searchValue: 'Batman',
         searchResults: [],
         discoverMovieData: {},
+        discoverTmdbMovieData: {},
         loading: false,
 
     },
@@ -27,18 +28,27 @@ const store = new Vuex.Store({
         setSearchResults(state, results) {
             state.searchResults = results
         }
+        , setDiscoverTmdbMovie(state, movie) {
+            state.discoverTmdbMovieData = movie
+        }
     },
     actions: {
+        discoverTmdbMovie({ commit }, movie) {
 
+            commit('setDiscoverTmdbMovie', movie)
+            router.push('discover-movie-tmdb')
+
+        },
         setSearchValue({ commit }, value) {
 
             commit('setSearchValue', value)
+
         },
 
         discoverMovie({ commit }, id) {
 
             commit('setLoading', true)
-            axios.get(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&i=${id}&plot=full`)
+            this.$axios.get(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&i=${id}&plot=full`)
                 .then(res => {
 
                     if (res.data.Response === 'True') {
