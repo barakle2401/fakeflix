@@ -14,6 +14,7 @@ const debounce = function (func, timer) {
     }
 
 }
+//return 12/11/2012 format
 const formatDate = (date) => {
 
     return new Date(date).toLocaleDateString("en-US")

@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 import { OMDB_API_KEY } from "../common/constants"
 
 import router from '../router/router'
+import axios from 'axios'
 
 Vue.use(Vuex)
 const store = new Vuex.Store({
@@ -48,8 +49,9 @@ const store = new Vuex.Store({
         discoverMovie({ commit }, id) {
 
             commit('setLoading', true)
-            this.$axios.get(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&i=${id}&plot=full`)
+            axios.get(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&i=${id}&plot=full`)
                 .then(res => {
+
 
                     if (res.data.Response === 'True') {
                         commit('setDiscoverMovieData', res.data)

@@ -83,6 +83,7 @@
     data: () => ({}),
     created() {
       if (!this.$route.params.id) this.$router.push("/");
+      console.log(this.$route.params.id);
       this.$store.dispatch("discoverMovie", this.$route.params.id);
 
       this.id = this.$route.params.id;

@@ -48,6 +48,7 @@
         showAlert: false,
         search: null,
         selectedMovie: "",
+        cancelToken: null,
       };
     },
     computed: {
@@ -60,13 +61,19 @@
         },
       },
     },
+
     mounted() {
+      const cancelToken = this.$axios.CancelToken;
+      this.cancelToken = cancelToken;
       setTimeout(() => {
         this.showSearchInput = true;
       }, 500);
     },
     watch: {
       searchValue: debounce(function(val) {
+        this.items = [];
+        const source = this.cancelToken.source();
+        source.cancel("text cancellation");
         this.loading = true;
         this.showAlert = false;
         const moviesUrl = this.$axios.get(
@@ -80,7 +87,9 @@
         );
 
         this.$axios
-          .all([moviesUrl, seriesUrl, gamesUrl])
+          .all([moviesUrl, seriesUrl, gamesUrl], {
+            cancelToken: source.token,
+          })
           .then(
             this.$axios.spread((...responses) => {
               this.items = [];
@@ -93,6 +102,11 @@
           )
           .catch((errors) => {
             console.log(errors);
+            if (this.$axios.isCancel(errors)) {
+              console.log("Request canceled", errors);
+            } else {
+              // handle error
+            }
           })
           .finally(() => {
             this.loading = false;

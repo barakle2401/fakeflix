@@ -5,7 +5,7 @@ import router from "./router/router"
 import store from "./modules/store"
 import axios from "axios"
 import firebase from "firebase/app"
-import firebaseConfig from "./common/config"
+import { firebaseConfig } from "./common/config"
 Vue.prototype.$axios = axios;
 Vue.config.productionTip = false;
 //register global filters
