@@ -14,7 +14,7 @@
         v-for="movie in movies"
         :key="movie.id"
       >
-        <v-card @click="discover(movie)">
+        <v-card>
           <v-img
             v-show="show"
             contain
@@ -37,6 +37,9 @@
           <v-card-actions>
             <v-spacer></v-spacer>
 
+            <v-btn icon x-small @click="discover(movie)">
+              <v-icon>mdi-information-outline </v-icon>
+            </v-btn>
             <v-btn icon x-small @click="addToFavorites(movie.id)">
               <v-icon>mdi-heart</v-icon>
             </v-btn>
@@ -114,8 +117,12 @@
         return `${IMG_API}/${path}`;
       },
       addToFavorites(movieId) {
-        console.log(movieId);
-        // this.$store.commit("addRemoveToFavorites", movieId);
+        const user = this.$store.state.user;
+        if (!user) {
+          this.$store.commit("setLoginDialogMode", true);
+        } else {
+          this.$store.dispatch("addToFavorites", movieId);
+        }
       },
     },
   };

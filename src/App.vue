@@ -4,6 +4,7 @@
       <Loader v-if="appLoading"></Loader>
       <ToolBar></ToolBar>
       <NavBar></NavBar>
+      <SnackBar :show="snackbar.on" :message="snackbar.message"></SnackBar>
       <transition>
         <router-view></router-view>
       </transition>
@@ -16,6 +17,7 @@
   import Loader from "./shared/Loader.vue";
   import ToolBar from "./shared/ToolBar.vue";
   import NavBar from "./shared/NavBar.vue";
+  import SnackBar from "./shared/SnackBar.vue";
   /*
     Todo's next ideas:
      - add rating popup component 
@@ -25,10 +27,13 @@
   export default {
     name: "App",
     store,
-    components: { Loader, ToolBar, NavBar },
+    components: { Loader, ToolBar, NavBar, SnackBar },
     computed: {
       appLoading() {
         return store.state.loading;
+      },
+      snackbar() {
+        return this.$store.state.snackbar;
       },
     },
     created() {},
