@@ -2,15 +2,15 @@
   <v-fab-transition>
     <v-card
       v-show="showCard"
-      class="mx-auto my-12 movie-card rounded"
+      class="mx-auto mb-6 movie-card rounded"
       min-height="400"
     >
       <v-img height="350" contain :src="poster"></v-img>
 
       <v-card-subtitle class="px-3 pb-1 text-truncate text-left">{{
-        data.Title
+        title
       }}</v-card-subtitle>
-      <div class="d-flex ">
+      <div class="d-flex">
         <v-subheader class="grey--text"
           >Type: {{ data.Type | capitalize }}</v-subheader
         >
@@ -33,40 +33,52 @@
   </v-fab-transition>
 </template>
 <script>
-  import router from "../router/router";
-  export default {
-    name: "MovieCard",
-    props: ["data", "displayDelay"],
-    data() {
-      return {
-        loading: false,
-        showCard: false,
-        selection: 1,
-      };
+import router from "@/router/router";
+export default {
+  name: "MovieCard",
+  props: {
+    data: {
+      type: Object,
+      required: true,
     },
-    methods: {
-      discoverMovie() {
-        router.push({
-          name: "discoverMovie",
-          params: { id: this.data.imdbID },
-        });
-      },
+    displayDelay: {
+      type: Number,
+      default: 10,
     },
-    computed: {
-      poster() {
-        return this.data.Poster;
-      },
+  },
+  data() {
+    return {
+      loading: false,
+      showCard: false,
+      selection: 1,
+    };
+  },
+  computed: {
+    poster() {
+      return this.data.Poster;
     },
-    mounted() {
-      setTimeout(() => {
-        this.showCard = true;
-      }, this.displayDelay);
+    title() {
+      return this.data.title;
     },
-  };
+  },
+  mounted() {
+    setTimeout(() => {
+      this.showCard = true;
+    }, this.displayDelay);
+  },
+  methods: {
+    discoverMovie() {
+      router.push({
+        name: "discoverMovie",
+        params: { id: this.data.imdbID },
+      });
+    },
+  },
+};
 </script>
 <style scoped>
-  .movie-card {
-    background-color: rgba(65, 57, 57, 0) !important;
-    color: rgb(255, 255, 255);
-  }
+.movie-card {
+  background-color: rgba(65, 57, 57, 0) !important;
+  color: rgb(255, 255, 255);
+}
 </style>

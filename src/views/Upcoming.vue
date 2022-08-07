@@ -4,7 +4,7 @@
 <script>
 import WarningMessage from "../shared/WarningMessage.vue";
 export default {
-  name: "NowPlaying",
+  name: "Upcoming",
   components: {
     WarningMessage,
   },

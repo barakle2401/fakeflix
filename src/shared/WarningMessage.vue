@@ -4,8 +4,8 @@
       <v-card>
         <v-scale-transition>
           <p
-            elevation="2"
             v-show="showMessage"
+            elevation="2"
             class="text-h6 text-primary pa-5"
           >
             {{ message }}
@@ -16,19 +16,24 @@
   </v-row>
 </template>
 <script>
-  export default {
-    props: ["message"],
-    name: "WarningMessage",
-    data: () => {
-      return {
-        showMessage: false,
-      };
+export default {
+  name: "WarningMessage",
+  props: {
+    message: {
+      type: String,
+      required: true,
     },
-    created() {
-      setTimeout(() => {
-        this.showMessage = true;
-      }, 500);
-    },
-  };
+  },
+  data: () => {
+    return {
+      showMessage: false,
+    };
+  },
+  created() {
+    setTimeout(() => {
+      this.showMessage = true;
+    }, 500);
+  },
+};
 </script>
 <style scoped></style>

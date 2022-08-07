@@ -1,7 +1,7 @@
 <template>
   <v-container
     class="d-flex flex-column justify-center"
-    style="min-height:80vh;"
+    style="min-height: 80vh"
   >
     <div>
       <v-row class="justify-center align-center row-wrapper">
@@ -12,9 +12,7 @@
                 class="align-end justify-center fill-height"
                 primary-title
               >
-                <v-btn class="py-1 px-5" color="netflix">
-                  Book Now
-                </v-btn>
+                <v-btn class="py-1 px-5" color="netflix"> Book Now </v-btn>
               </v-card-title>
             </v-img>
           </v-card>
@@ -39,12 +37,10 @@
                     readonly
                     size="14"
                   ></v-rating>
-                  <div class="grey--text ms-4">
-                    4.5 (413)
-                  </div>
+                  <div class="grey--text ms-4">4.5 (413)</div>
                 </div>
 
-                <v-card-text class="grey--text ">
+                <v-card-text class="grey--text">
                   <div class="d-flex my-2">
                     <span class="me-3"
                       ><span class="white--text">Genre: </span>
@@ -78,34 +74,34 @@
   </v-container>
 </template>
 <script>
-  export default {
-    name: "DiscoverMovie",
-    data: () => ({}),
-    created() {
-      if (!this.$route.params.id) this.$router.push("/");
-      console.log(this.$route.params.id);
-      this.$store.dispatch("discoverMovie", this.$route.params.id);
+export default {
+  name: "DiscoverMovie",
+  data: () => ({}),
+  created() {
+    if (!this.$route.params.id) this.$router.push("/");
+    console.log(this.$route.params.id);
+    this.$store.dispatch("discoverMovie", this.$route.params.id);
 
-      this.id = this.$route.params.id;
+    this.id = this.$route.params.id;
+  },
+  computed: {
+    movie() {
+      return this.$store.state.discoverMovieData;
     },
-    computed: {
-      movie() {
-        return this.$store.state.discoverMovieData;
-      },
-      actors() {
-        if (this.movie.Actors) return this.movie.Actors.split(",");
-        return [];
-      },
+    actors() {
+      if (this.movie.Actors) return this.movie.Actors.split(",");
+      return [];
     },
-  };
+  },
+};
 </script>
 <style scoped>
-  .actor {
-    margin: 0 1rem;
-    color: white;
-    border-bottom: 1px solid #ff2a1fb9;
-  }
-  .row-wrapper {
-    box-shadow: 2px 4px 10px 4px rgba(255, 44, 31, 0.59);
-  }
+.actor {
+  margin: 0 1rem;
+  color: white;
+  border-bottom: 1px solid #ff2a1fb9;
+}
+.row-wrapper {
+  box-shadow: 2px 4px 10px 4px rgba(255, 44, 31, 0.59);
+}
 </style>

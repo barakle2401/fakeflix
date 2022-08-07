@@ -4,12 +4,12 @@
   </v-snackbar>
 </template>
 <script>
-  export default {
-    props: ["message", "show"],
-    name: "SnackBar",
-    data: () => {
-      return { multiLine: true };
-    },
-  };
+export default {
+  props: ["message", "show"],
+  name: "SnackBar",
+  data: () => {
+    return { multiLine: true };
+  },
+};
 </script>
 <style></style>

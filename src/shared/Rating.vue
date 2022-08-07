@@ -5,14 +5,14 @@
   </div>
 </template>
 <script>
-  export default {
-    props: ["rating"],
-    name: "Rating",
-    computed: {
-      formatedRating() {
-        return `${this.rating} / 10`;
-      },
+export default {
+  props: ["rating"],
+  name: "Rating",
+  computed: {
+    formatedRating() {
+      return `${this.rating} / 10`;
     },
-  };
+  },
+};
 </script>
 <style></style>

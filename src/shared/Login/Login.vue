@@ -1,78 +1,57 @@
 <template>
-  <v-row justify="center">
-    <v-dialog v-model="dialog" max-width="290">
-      <v-card>
-        <v-card-title class="text-h5">
-          In order to save movies, pleas login with facebook.
-        </v-card-title>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="facebookAuth">
-            FACEBOOK
-          </v-btn>
-        </v-card-actions>
-      </v-card>
+  <v-row>
+    <v-dialog v-model="dialog" width="220">
+      <v-btn
+        :loading="loading"
+        :disabled="loading"
+        color="primary"
+        @click="googleAuth"
+      >
+        <v-icon dark class="me-auto"> mdi-google </v-icon> sign with google
+      </v-btn>
     </v-dialog>
   </v-row>
 </template>
 <script>
-  import firebase from "firebase";
-  // import * as firebaseui from "firebaseui";
-  import "firebaseui/dist/firebaseui.css";
-  export default {
-    name: "Login",
-    data: () => {
-      return {};
-    },
-    computed: {
-      dialog: {
-        get() {
-          return this.$store.state.loginDialogMode;
-        },
-        set(newVal) {
-          this.$store.commit("setLoginDialogMode", newVal);
-        },
-      },
-    },
-    methods: {
-      facebookAuth() {
-        // let ui = firebaseui.auth.AuthUI.getInstance();
-        // if (!ui) {
-        //   ui = new firebaseui.auth.AuthUI(firebase.auth());
-        // }
-        // const uiConfig = {
-        //   signInSuccessUrl: "/",
-        //   signInOptions: [firebase.auth.FacebookAuthProvider.PROVIDER_ID],
-        // };
-        // ui.start("#firebaseui-auth-container", uiConfig);
-        console.log(firebase);
-        var provider = new firebase.auth.FacebookAuthProvider();
-        provider.setCustomParameters({
-          display: "popup",
-        });
-        firebase
-          .auth()
-          .signInWithPopup(provider)
-          .then((result) => {
-            this.$store.commit("setLoginDialogMode", false);
-            console.log(result.user);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      },
-    },
+import { getAuth } from "firebase/auth";
 
-    created() {
-      // console.log(firebase);
-      firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-          this.$store.commit("setSnackBar", `Logged in as ${user.displayName}`);
-          this.$store.commit("setUser", user);
-        }
-      });
+import "firebaseui/dist/firebaseui.css";
+
+export default {
+  name: "Login",
+  data: () => {
+    return {};
+  },
+  computed: {
+    dialog: {
+      get() {
+        return this.$store.state.loginDialogMode;
+      },
+      set(newVal) {
+        this.$store.commit("SET_LOGIN_DIALOG_MODE", newVal);
+      },
     },
-  };
+    loading() {
+      return this.$store.getters.loading;
+    },
+  },
+  created() {
+    const auth = getAuth();
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        this.$store.commit(
+          "SET_SNACKBAR_MESSAGE",
+          `Logged in as ${user.displayName}`
+        );
+        this.$store.commit("SET_USER", user);
+      }
+    });
+  },
+  methods: {
+    googleAuth() {
+      this.$store.dispatch("login");
+    },
+  },
+};
 </script>
 <style></style>

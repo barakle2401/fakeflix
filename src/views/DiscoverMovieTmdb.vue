@@ -22,20 +22,20 @@
 </template>
 
 <script>
-  import { IMG_API } from "../common/constants";
-  export default {
-    name: "discoverMovieTmdb",
+import { IMG_API } from "../common/constants";
+export default {
+  name: "discoverMovieTmdb",
 
-    computed: {
-      movie() {
-        return this.$store.state.discoverTmdbMovieData;
-      },
+  computed: {
+    movie() {
+      return this.$store.state.discoverTmdbMovieData;
     },
-    methods: {
-      poster(path) {
-        return `${IMG_API}/${path}`;
-      },
+  },
+  methods: {
+    poster(path) {
+      return `${IMG_API}/${path}`;
     },
-  };
+  },
+};
 </script>
 <style></style>

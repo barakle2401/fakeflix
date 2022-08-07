@@ -1,27 +1,24 @@
 <template>
   <div>
-    <Title></Title>
-    <SearchBar> </SearchBar>
-
+    <OmdbSearchBar> </OmdbSearchBar>
     <v-container>
       <transition name="slide-fade"> </transition>
-      <Cards> </Cards>
+      <MoviesCards> </MoviesCards>
     </v-container>
   </div>
 </template>
 <script>
-  import SearchBar from "../components/SearchBar.vue";
-  import Title from "../components/Title.vue";
-  import Cards from "../components/MoviesCards.vue";
+import OmdbSearchBar from "@/components/OMDB/OmdbSearchBar.vue";
 
-  export default {
-    name: "Home",
-    components: {
-      Title,
-      SearchBar,
-      Cards,
-    },
-    computed: {},
-  };
+import MoviesCards from "@/components/OMDB/MoviesCards.vue";
+
+export default {
+  name: "Home",
+  components: {
+    OmdbSearchBar,
+    MoviesCards,
+  },
+  computed: {},
+};
 </script>
 <style></style>
