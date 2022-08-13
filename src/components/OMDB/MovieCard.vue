@@ -33,7 +33,6 @@
   </v-fab-transition>
 </template>
 <script>
-import router from "@/router/router";
 export default {
   name: "MovieCard",
   props: {
@@ -68,9 +67,9 @@ export default {
   },
   methods: {
     discoverMovie() {
-      router.push({
+      this.$router.push({
         name: "discoverMovie",
-        params: { id: this.data.imdbID },
+        params: { movieId: this.data.imdbID },
       });
     },
   },

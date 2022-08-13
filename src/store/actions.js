@@ -1,32 +1,9 @@
-import router from "@/router/router";
-import axios from "axios";
-import { OMDB_API_KEY } from "@/common/constants";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import db from "@/firebase/db";
 
 const provider = new GoogleAuthProvider();
 
 export const actions = {
-  discoverTmdbMovie({ commit }, movie) {
-    commit("SET_LOADING", movie);
-    router.push("discover-movie-tmdb");
-  },
-  discoverMovie({ commit }, id) {
-    commit("SET_LOADING", true);
-    axios
-      .get(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&i=${id}&plot=full`)
-      .then((res) => {
-        if (res.data.Response === "True") {
-          commit("SET_DISCOVER_MOVIE_DATA", res.data);
-        } else {
-          router.go(-1);
-        }
-        commit("SET_LOADING", false);
-      })
-      .catch(({ message }) => {
-        console.log(message);
-      });
-  },
   logOut({ commit }) {
     commit("SET_LOADING", true);
 
@@ -43,6 +20,7 @@ export const actions = {
           commit("SET_SNACKBAR_MESSAGE", "Sign out successful.");
           commit("SET_LOADING", false);
           commit("SET_USER", null);
+          commit("SET_FAVORITES", []);
         });
       })
       .catch((error) => {
@@ -50,7 +28,7 @@ export const actions = {
         console.log(error);
       });
   },
-  login({ commit }) {
+  login({ commit, dispatch }) {
     const auth = getAuth();
     signInWithPopup(auth, provider)
       .then((result) => {
@@ -66,13 +44,14 @@ export const actions = {
       .finally(() => {
         commit("SET_LOADING", false);
         commit("SET_LOGIN_DIALOG_MODE", false);
+        dispatch("getFavoriteMovies");
       });
   },
   addToFavorites({ commit, state }, movie) {
     if (!state.user) {
       commit("SET_LOGIN_DIALOG_MODE", true);
     } else {
-      db.addToFavorites(movie).then((res) => {
+      db.addToFavorites(movie, state.user).then((res) => {
         if (res === "OK") {
           commit("SET_SNACKBAR_MESSAGE", `${movie.title} added to favorites.`);
           const updatedFavorites = [...state.favoriteMovies];
@@ -86,7 +65,7 @@ export const actions = {
     if (!state.user) {
       commit("SET_LOGIN_DIALOG_MODE", true);
     } else {
-      db.removeFromFavorites(movie).then((res) => {
+      db.removeFromFavorites(movie, state.user).then((res) => {
         if (res === "OK") {
           commit(
             "SET_SNACKBAR_MESSAGE",
@@ -101,13 +80,18 @@ export const actions = {
       });
     }
   },
-  async getFavoriteMovies({ commit }) {
-    const favorites = await db.getFavorites();
-
-    const inArray = Object.keys(favorites).map((movieId) => {
-      return favorites[movieId];
-    });
-
-    commit("SET_FAVORITES", inArray);
+  async getFavoriteMovies({ commit, state }) {
+    commit("SET_LOADING", true);
+    try {
+      const favorites = (await db.getFavorites(state.user)) || [];
+      const inArray = Object.keys(favorites).map((movieId) => {
+        return favorites[movieId];
+      });
+      commit("SET_FAVORITES", inArray);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      commit("SET_LOADING", false);
+    }
   },
 };

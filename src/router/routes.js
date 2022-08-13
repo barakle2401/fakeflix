@@ -8,9 +8,13 @@ const DiscoverMovie = () => import("@/views/DiscoverMovie");
 
 export const routes = [
   { path: "/", component: Home },
-  { path: "/discover-movie", component: DiscoverMovie, name: "discoverMovie" },
   {
-    path: "/discover-movie-tmdb",
+    path: "/discover-movie-omdb:movieId",
+    component: DiscoverMovie,
+    name: "discoverMovie",
+  },
+  {
+    path: "/discover-movie-tmdb:movieId",
     component: DiscoverMovieTmdb,
     name: "discoverMovieTmdb",
   },

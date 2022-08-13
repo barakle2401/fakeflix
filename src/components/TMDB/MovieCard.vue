@@ -44,6 +44,7 @@
 import { IMG_API } from "@/common/constants";
 import { formatDate as _formatDate } from "@/utils/utils";
 import Rating from "@/shared/Rating";
+import { mapGetters } from "vuex";
 
 export default {
   name: "MovieCard",
@@ -61,12 +62,13 @@ export default {
     },
   },
   computed: {
-    favoriteMovies() {
-      return this.$store.getters.favoriteMovies;
-    },
     isMovieInFavorites() {
-      return this.favoriteMovies.find((movie) => movie.id === this.movie.id);
+      return (
+        this.user &&
+        this.favoriteMovies.find((movie) => movie.id === this.movie.id)
+      );
     },
+    ...mapGetters(["user", "favoriteMovies"]),
   },
   methods: {
     poster(path) {
@@ -76,7 +78,12 @@ export default {
       return _formatDate(date);
     },
     discover(movie) {
-      this.$store.dispatch("discoverTmdbMovie", movie);
+      this.$router.push({
+        name: "discoverMovieTmdb",
+        params: {
+          movieId: movie.id,
+        },
+      });
     },
     toggleFavorite(movie) {
       if (!this.isMovieInFavorites) {

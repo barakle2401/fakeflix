@@ -35,9 +35,9 @@ export default {
     snackbar() {
       return this.$store.state.snackbar;
     },
-  },
-  created() {
-    this.$store.dispatch("getFavoriteMovies");
+    user() {
+      return this.$store.getters.user;
+    },
   },
 };
 </script>

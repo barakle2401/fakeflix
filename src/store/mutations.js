@@ -9,14 +9,8 @@ export const mutations = {
   [types.SET_LOADING](state, payload) {
     state.loading = payload;
   },
-  [types.SET_DISCOVER_MOVIE_DATA](state, payload) {
-    state.discoverMovieData = payload;
-  },
   [types.SET_OMDB_SEARCH_RESULTS](state, results) {
     state.omdbResults = results;
-  },
-  [types.SET_DISCOVER_TMDB_MOVIE](state, movie) {
-    state.discoverTmdbMovieData = movie;
   },
   [types.SET_LOGIN_DIALOG_MODE](state, mode) {
     state.loginDialogMode = mode;

@@ -3,7 +3,7 @@
     class="d-flex flex-column justify-center"
     style="min-height: 80vh"
   >
-    <div>
+    <v-card v-if="movie">
       <v-row class="justify-center align-center row-wrapper">
         <v-col cols="12" md="3">
           <v-card>
@@ -70,27 +70,48 @@
           </v-card>
         </v-col>
       </v-row>
-    </div>
+    </v-card>
   </v-container>
 </template>
 <script>
+import axios from "axios";
+import { OMDB_API_KEY } from "@/common/constants";
+
 export default {
   name: "DiscoverMovie",
-  data: () => ({}),
-  created() {
-    if (!this.$route.params.id) this.$router.push("/");
-    console.log(this.$route.params.id);
-    this.$store.dispatch("discoverMovie", this.$route.params.id);
-
-    this.id = this.$route.params.id;
-  },
+  data: () => ({
+    movie: null,
+  }),
   computed: {
-    movie() {
-      return this.$store.state.discoverMovieData;
+    movieId() {
+      return this.$route.params.movieId;
     },
     actors() {
       if (this.movie.Actors) return this.movie.Actors.split(",");
       return [];
+    },
+  },
+  created() {
+    this.getMovie();
+  },
+  methods: {
+    getMovie() {
+      this.$store.commit("SET_LOADING", true);
+      axios
+        .get(
+          `https://www.omdbapi.com/?apiKey=${OMDB_API_KEY}&i=${this.movieId}&plot=full`
+        )
+        .then((res) => {
+          if (res.status === 200) {
+            this.movie = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.$store.commit("SET_LOADING", false);
+        });
     },
   },
 };

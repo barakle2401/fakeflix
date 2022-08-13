@@ -14,7 +14,6 @@
 </template>
 <script>
 import { getAuth } from "firebase/auth";
-
 import "firebaseui/dist/firebaseui.css";
 
 export default {
@@ -39,11 +38,12 @@ export default {
     const auth = getAuth();
     auth.onAuthStateChanged((user) => {
       if (user) {
+        this.$store.commit("SET_USER", user);
         this.$store.commit(
           "SET_SNACKBAR_MESSAGE",
           `Logged in as ${user.displayName}`
         );
-        this.$store.commit("SET_USER", user);
+        this.$store.dispatch("getFavoriteMovies");
       }
     });
   },

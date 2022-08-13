@@ -2,9 +2,9 @@ import { db } from "./firebase";
 import { ref, set, child, get } from "firebase/database";
 import firebase from "firebase/compat/app";
 
-const addToFavorites = async (movie) => {
+const addToFavorites = async (movie, user) => {
   return new Promise((resolve, reject) => {
-    set(ref(db, "favorites/" + movie.id), {
+    set(ref(db, `favorites/${user.uid}/${movie.id}`), {
       ...movie,
     })
       .then(() => {
@@ -16,11 +16,11 @@ const addToFavorites = async (movie) => {
   });
 };
 
-const removeFromFavorites = async (movie) => {
+const removeFromFavorites = async (movie, user) => {
   return new Promise((resolve, reject) => {
     firebase
       .database()
-      .ref("favorites/" + movie.id)
+      .ref(`favorites/${user.uid}/${movie.id}`)
       .remove()
       .then(() => {
         resolve("OK");
@@ -31,10 +31,10 @@ const removeFromFavorites = async (movie) => {
   });
 };
 
-const getFavorites = async () => {
+const getFavorites = async (user) => {
   const dbRef = ref(db);
   return new Promise((resolve, reject) => {
-    get(child(dbRef, `favorites`))
+    get(child(dbRef, `favorites/${user.uid}`))
       .then((snapshot) => {
         if (snapshot.exists()) {
           resolve(snapshot.val());

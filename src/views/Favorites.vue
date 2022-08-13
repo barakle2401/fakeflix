@@ -1,33 +1,45 @@
 <template>
   <v-container>
-    <div
-      class="text-h6 text-left text--primary font-weight-light mb-3 rounded pa-1"
-    >
-      Your favorites movies
+    <div v-if="movies.length > 0">
+      <div
+        class="text-h6 text-left text--primary font-weight-light mb-3 rounded pa-1"
+      >
+        Your favorites movies
+      </div>
+
+      <MoviesCards :movies="movies"></MoviesCards>
     </div>
-    <MoviesCards :movies="favoriteMovies"></MoviesCards>
-    <v-row class="justify-center">
-      <v-col md="4">
-        <div class="text-center">
-          <v-pagination v-model="page" :length="4" circle></v-pagination></div
-      ></v-col>
-    </v-row>
+
+    <WarningMessage
+      v-else-if="!$store.state.loading"
+      message="No favorites movies yet"
+    ></WarningMessage>
   </v-container>
 </template>
 <script>
-import MoviesCards from "@/components/TMDB/MoviesCards";
+import { mapGetters } from "vuex";
+
 export default {
   name: "Favorites",
-  components: { MoviesCards },
+  components: {
+    MoviesCards: () => import("@/components/TMDB/MoviesCards"),
+    WarningMessage: () => import("@/shared/WarningMessage"),
+  },
   data: function () {
     return {
       page: 1,
     };
   },
   computed: {
-    favoriteMovies() {
+    movies() {
       return this.$store.getters.favoriteMovies;
     },
+    ...mapGetters(["user"]),
+  },
+  created() {
+    if (this.user) {
+      this.$store.dispatch("getFavoriteMovies");
+    }
   },
 };
 </script>

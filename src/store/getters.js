@@ -14,4 +14,7 @@ export const getters = {
   loading: (state) => {
     return state.loading;
   },
+  user: (state) => {
+    return state.user;
+  },
 };
