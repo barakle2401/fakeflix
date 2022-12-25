@@ -20,13 +20,6 @@ This web application allows users to search for movies, save their favorites, an
 ## Build for Production
 Run `npm run build` to build the app for production. The built files will be stored in the `dist/` directory.
 
-## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
-## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-
 
 
 ![alt text](https://github.com/barakle2401/fakeflix/blob/master/src/assets/images/github/fakeflix-image1.png)
