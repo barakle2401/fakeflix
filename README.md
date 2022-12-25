@@ -1,5 +1,6 @@
 # Movie Search and Favorites Movies App
-
+[![Vue.js](https://img.shields.io/badge/vue.js-2.6.11-brightgreen.svg)](https://vuejs.org/)
+#### [LIVE APP](https://fakeflix.onrender.com/)
 This web application allows users to search for movies, save their favorites, and manage their account. The app is built with Vue, Vuex, and Vuetify and utilizes Firebase for authentication and data storage.
 
 ## Features
@@ -26,7 +27,7 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 
-#### [LIVE APP](https://fakeflix.onrender.com/)
+
 
 ![alt text](https://github.com/barakle2401/fakeflix/blob/master/src/assets/images/github/fakeflix-image1.png)
 
